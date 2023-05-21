@@ -36,7 +36,7 @@ import store from "../store/store"
             if(places){
                 if(places.length == 1){
                     places.forEach((place) => {
-                        let obj = {id: this.id+1,placename:place.formatted_address,geometry:[place.geometry]}
+                        let obj = {id: this.id+1,placename:place.formatted_address,geometry:[place.geometry],checked:false}
                         this.searchHistory = [obj,...this.searchHistory]
                         this.id+=1
                     })
@@ -46,7 +46,7 @@ import store from "../store/store"
                     places.forEach((place) => {
                          array = [place.geometry,...array]
                     });
-                    let obj = {id: this.id+1,placename:this.location,geometry:array}
+                    let obj = {id: this.id+1,placename:this.location,geometry:array,checked:false}
                     this.searchHistory = [obj,...this.searchHistory]
                     this.id+=1
                 }
@@ -58,6 +58,7 @@ import store from "../store/store"
            
         },
         methods:{
+            //get user current location name
             onSearch(){
                 if(navigator.geolocation){
                     navigator.geolocation.getCurrentPosition(
@@ -72,8 +73,9 @@ import store from "../store/store"
                     console.log("browser not support geo API");
                 }
             },
-            getAddress(lat ,long){
-                axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyBXEvdPycvGui6QCvpVuVqaRWeaXaPjPto")
+            //get user address by lat and lng 
+            getAddress(lat ,lng){
+                axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=AIzaSyBXEvdPycvGui6QCvpVuVqaRWeaXaPjPto")
                 .then(response=>{
                     if(response.data.error_message){
                         console.log(response.data.error_message);

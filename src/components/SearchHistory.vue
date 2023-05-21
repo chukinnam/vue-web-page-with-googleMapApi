@@ -10,7 +10,9 @@
                     <input class="lcheckbox" type="checkbox" 
                         :value="loction.placename" 
                         :id="loction.id" 
-                        @change="check(loction.id)">
+                        @change="check(loction.id)"
+                        :checked="loction.checked"
+                        >
                     <span >{{ loction.placename }}</span>
                 </div>
             </div>
@@ -36,25 +38,34 @@ export default{
         }
     },
     methods:{
+        //remove all seelcted marks
         remove(){
             this.selectedhistory=[]
             this.selectedPlace=[]
+            this.searchHistory.forEach((value) => value.checked=false);
             store.commit('updateSelectedHistory', this.selectedhistory)
-            document.querySelectorAll('.lcheckbox').forEach((element) => {
-                element.checked = false;
-            });
         },
         check(e){
+            //update selected place array 
             if(this.selectedPlace.includes(e)){
                 let filteredArray = this.selectedPlace.filter( arryValue => arryValue !== e)
                 this.selectedPlace = filteredArray 
             }else{
                 this.selectedPlace=[e,...this.selectedPlace]
             }
+
+            // update selected history by selected place id 
             this.selectedhistory=[]
             this.selectedPlace.forEach(value=>{
                 this.selectedhistory = [this.searchHistory.find((obj) => obj.id == value),...this.selectedhistory];
             });
+
+            //update seachhistory locations checked stattus
+            this.searchHistory.forEach(value=>{
+                if(value.id == e){
+                    value.checked = value.checked ? false : true
+                }
+            })
             store.commit('updateSelectedHistory', this.selectedhistory)
         }
 

@@ -16,7 +16,7 @@ export default {
         return{
             totalpagenumber:0,
             searchHistory:"",
-            currentPage:0
+            currentPage:0,
         }
     },
     mounted(){
@@ -32,19 +32,23 @@ export default {
             this.updateShowResult(this.currentPage)
             this. getPagination(newLocations)
         }
+        
     },
     methods:{
+        //get the total number of pages
         getPagination(e){
             this.totalpagenumber = Math.ceil(e.length/this.maxshow)
         },
+        //update the search display when page change
         updateShowResult(page){
             this.currentPage = parseInt(page)
             let maxshow = parseInt(this.maxshow)
             if(this.currentPage > 1){
-            this.$emit('location',this.searchHistory.slice(this.currentPage*maxshow-maxshow,this.currentPage*maxshow));
+                this.$emit('location',this.searchHistory.slice(this.currentPage*maxshow-maxshow,this.currentPage*maxshow));
             }else{
-            this.$emit('location',this.searchHistory.slice(0,maxshow));
-            }
+                this.$emit('location',this.searchHistory.slice(0,maxshow));
+            } 
+            console.log("searchHistory",this.searchHistory);
 
         }
     }
