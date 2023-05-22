@@ -61,11 +61,8 @@ export default{
             });
 
             //update seachhistory locations checked stattus
-            this.searchHistory.forEach(value=>{
-                if(value.id == e){
-                    value.checked = value.checked ? false : true
-                }
-            })
+            let objIndex = this.searchHistory.findIndex((obj => obj.id == e));
+            this.searchHistory[objIndex].checked = this.searchHistory[objIndex].checked? false : true
             store.commit('updateSelectedHistory', this.selectedhistory)
         }
 
